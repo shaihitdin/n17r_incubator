@@ -1,0 +1,80 @@
+<div id="root" />
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script type="text/babel">
+  const rootElement = document.getElementById('root');
+  const colors = ['Maroon', 'MediumBlue', 'OrangeRed', 'Pink', 'Red', 'Snow', 'SpringGreen', 'Gold', 'Gray', 'Indigo', 'Lime'];
+  function randomInteger(min, max) {
+    let rand = min + Math.random() * (max + 1 - min);
+    rand = Math.floor(rand);
+    return rand;
+  }
+  class App extends React.Component {
+    state = {
+      back_color: '',
+      text_color: '',
+      text: '',
+      eventCount: 0,
+      hp: 3,
+    };
+    getRandomColor = () => colors[randomInteger(0, colors.length - 1)]
+    
+    ChooseColor = () => {
+      let newBackColor = this.getRandomColor(), newTextColor = this.getRandomColor(), newText = this.getRandomColor();
+      while(newBackColor === newTextColor) {
+        newBackColor = this.getRandomColor();
+        newTextColor = this.getRandomColor();
+      }
+      this.setState({
+        back_color: newBackColor,
+        text_color: newTextColor,
+        text: newText,
+      })
+    }
+    componentDidMount() {
+      this.ChooseColor()
+    }
+    processclick = (props) => {
+      if((props.val === true && props.textColor === props.backColor) || (props.val === false && props.textColor !== props.backColor)) {
+         this.setState({
+           eventCount: this.state.eventCount + 1
+         })
+      } else {
+        this.setState({
+          hp: this.state.hp - 1,
+        })       
+      }
+      this.ChooseColor();
+      if(this.state.eventCount > 10 || this.state.hp <= 0) {
+        alert("Game Over")
+      }
+    }
+
+    render() {
+      return (
+        <div>
+          <p>Total points: {this.state.eventCount}</p>
+          <p>HP left: {this.state.hp}</p>
+          <div style = {{width: "215px", height: "50px", textAlign: "center", 
+                          backgroundColor: this.state.back_color, content: "kek", 
+                          margin: "10", padding: "100px", color: this.state.text_color}}> 
+                          <h1>{this.state.text}</h1>
+            </div>  
+           
+          <p>{this.state.text} equals {this.state.back_color}</p>
+          <button onClick={() => this.processclick({val: true, textColor: this.state.text, backColor: this.state.back_color})}>
+            True
+          </button>
+          <button onClick={() => this.processclick({val: false, textColor: this.state.text, backColor: this.state.back_color})}>
+            False
+          </button>
+
+        </div>
+      );
+    }
+  }
+
+  ReactDOM.render(<App />, rootElement);
+    
+</script>

@@ -1,0 +1,70 @@
+﻿<div id="root" />
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script type="text/babel">
+  const rootElement = document.getElementById('root');
+  
+  class App extends React.Component {
+    state = {
+      //eventCount: 0,
+      username: '',
+      jobs: []
+    };
+    incrementEventCount = () => {
+      this.setState({
+        //eventCount: this.state.eventCount + 1,
+        jobs: [...this.state.jobs, this.state.username],
+        //username: ''
+      })
+    };
+    Clear = () => {
+      this.setState({
+        //eventCount: this.state.eventCount + 1,
+        jobs: [],
+        //username: ''
+      })    
+    }
+    Delete = (index2) => {
+      this.setState({
+        jobs: this.state.jobs.filter((item, index) => {
+          return index2 !== index;
+        })
+      })
+    }
+    
+    handleChangeUsername = event => {
+      this.setState({username: event.target.value})
+    };
+    
+    render() {
+      return (
+        <div>
+          <button onClick={this.incrementEventCount}>
+            Add
+          </button>
+          <br/>
+          <button onClick={this.Clear}>
+            Clear
+          </button>
+
+          <p>You typed: {this.state.username}</p>
+          <input onChange={this.handleChangeUsername} />
+          <p>{this.state.jobs.length}</p>
+          {
+          <p>
+          {
+            this.state.jobs.map((item, index) => {
+              return <div key={index} onClick={() => this.Delete(index)} className="container">{item}</div>;
+            })
+          }
+          </p>
+          
+          }
+        </div>
+      );
+    }
+  }
+  
+  ReactDOM.render(<App />, rootElement);
+</script>
