@@ -39,7 +39,7 @@ export default class FriendsList extends React.Component {
             <FlatList style={{flex: 1}} data={this.props.friends.filter(item => item.id !== 0)}  keyExtractor={(item) => item.id.toString()} renderItem={({item}) => {
                   return (
                     <TouchableOpacity onPress={() => this.props.onDisplayHistory(item)}>
-                      <Text>{item.name} {this.calcBalance(item)}</Text>
+                      <Text style={{borderWidth: 1}}>{item.name} {this.calcBalance(item)}</Text>
                     </TouchableOpacity>
                   )
               }}/>

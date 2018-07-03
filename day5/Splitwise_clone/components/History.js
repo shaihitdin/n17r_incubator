@@ -1,25 +1,34 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
 
 
 export default class AddFriend extends React.Component {
 
-  filtrate = (event) => {
-    return (event.paid === 0 && event.friendIds.filter(id => id === this.props.friend.id))
-    || (event.paid === this.props.friend.id && event.friendIds.filter(id => id === 0))
+  side = (item) => {
+    return (item.paid === 0) ? -1 : 1
   }
 
+
   render() {
+    console.disableYellowBox = true
     return (
       <View style={{flex: 1}}>
         <Text>
           {'\n\n'}
         </Text>
         <TouchableOpacity onPress={() => this.props.onChangeSnap('Menu')}>
-          <Text style={{fontSize: 20, height: 40, width: 40, borderRadius: 40}}>
+          <Text style={[{fontSize: 20, height: 40, width: 60, borderRadius: 40, borderWidth: 2}]}>
             Back
           </Text>
         </TouchableOpacity>
+        <FlatList style={{flex: 1}}
+          data={this.props.events.filter(item => ((item.paid === 0 && item.friendIds.filter(friend => friend === this.props.friend.id).length > 0)
+            || (item.paid === this.props.friend.id && item.friendIds.filter(friend => friend === 0).length > 0 )))}
+          renderItem={({item}) => {
+              return (
+                  <Text style={styles.container}>{item.description} {this.side(item) * (item.cost / item.friendIds.length)}</Text>
+              )
+          }}/>
       </View>
     );
   }

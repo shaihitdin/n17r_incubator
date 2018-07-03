@@ -28,7 +28,7 @@ export default class App extends React.Component {
 
   displayHistory = (item) => {
     this.setState ({
-      friend: item,
+      friendToDisplay: item,
       currentSnap: 'History',
     })
   }
